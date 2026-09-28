@@ -1,29 +1,48 @@
-name: Build AAB
-on: [push]
+name: Build NewNET AAB
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node 18
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-      - uses: actions/setup-java@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
         with:
-          distribution: temurin
+          distribution: 'temurin'
           java-version: '17'
-      - run: npm install --legacy-peer-deps
-      - run: npm install -g eas-cli
-      - run: npx expo prebuild --platform android --non-interactive --clean
-      - name: Create Keystore
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Create Keystore and Build AAB
         run: |
-          keytool -genkey -v -keystore android/app/release.keystore -alias mykey -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=NewNET, OU=NewNET, O=NewNET, L=PortHarcourt, S=Rivers, C=NG"
-          echo "MYAPP_RELEASE_STORE_FILE=release.keystore" >> android/gradle.properties
-          echo "MYAPP_RELEASE_KEY_ALIAS=mykey" >> android/gradle.properties
-          echo "MYAPP_RELEASE_STORE_PASSWORD=123456" >> android/gradle.properties
-          echo "MYAPP_RELEASE_KEY_PASSWORD=123456" >> android/gradle.properties
-      - run: cd android && chmod +x gradlew &&./gradlew bundleRelease --no-daemon -x lintVitalRelease
-      - uses: actions/upload-artifact@v4
+          npx expo prebuild --platform android --no-install
+          mkdir -p android/app
+          keytool -genkey -v -keystore android/app/release.keystore -alias mykey -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=NewNET, OU=Live, O=NewNET, L=PH, S=Rivers, C=NG"
+          echo "MYAPP_UPLOAD_STORE_FILE=release.keystore" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_KEY_ALIAS=mykey" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_STORE_PASSWORD=123456" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_KEY_PASSWORD=123456" >> android/gradle.properties
+          cd android
+          chmod +x gradlew
+         ./gradlew bundleRelease
+
+      - name: Upload AAB file
+        uses: actions/upload-artifact@v4
         with:
           name: NewNET-Live-AAB
-          path: android/app/build/outputs/bundle/release/*.aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
