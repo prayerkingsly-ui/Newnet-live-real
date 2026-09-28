@@ -1,13 +1,1 @@
-{
-  "expo": {
-    "name": "NewNET Live",
-    "slug": "newnet-live-real",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "android": {
-      "package": "com.newnet.live.real",
-      "versionCode": 1
-    },
-    "platforms": ["android", "ios", "web"]
-  }
-}
+
