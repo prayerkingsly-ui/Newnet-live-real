@@ -12,10 +12,17 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - run: npm install
+      - run: npm install --legacy-peer-deps
       - run: npm install -g eas-cli
-      - run: npx expo prebuild --platform android
-      - run: cd android && chmod +x gradlew &&./gradlew bundleRelease
+      - run: npx expo prebuild --platform android --non-interactive --clean
+      - name: Create Keystore
+        run: |
+          keytool -genkey -v -keystore android/app/release.keystore -alias mykey -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=NewNET, OU=NewNET, O=NewNET, L=PortHarcourt, S=Rivers, C=NG"
+          echo "MYAPP_RELEASE_STORE_FILE=release.keystore" >> android/gradle.properties
+          echo "MYAPP_RELEASE_KEY_ALIAS=mykey" >> android/gradle.properties
+          echo "MYAPP_RELEASE_STORE_PASSWORD=123456" >> android/gradle.properties
+          echo "MYAPP_RELEASE_KEY_PASSWORD=123456" >> android/gradle.properties
+      - run: cd android && chmod +x gradlew &&./gradlew bundleRelease --no-daemon -x lintVitalRelease
       - uses: actions/upload-artifact@v4
         with:
           name: NewNET-Live-AAB
