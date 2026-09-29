@@ -3,46 +3,39 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup Node 18
         uses: actions/setup-node@v4
         with:
           node-version: 18
-
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-
       - name: Create Keystore and Build AAB
         run: |
-          npx expo prebuild --platform android --no-install
+          npx expo prebuild --platform android --clean
           mkdir -p android/app
-          keytool -genkey -v -keystore android/app/release.keystore -alias mykey -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=NewNET, OU=Live, O=NewNET, L=PH, S=Rivers, C=NG"
-          echo "MYAPP_UPLOAD_STORE_FILE=release.keystore" >> android/gradle.properties
-          echo "MYAPP_UPLOAD_KEY_ALIAS=mykey" >> android/gradle.properties
-          echo "MYAPP_UPLOAD_STORE_PASSWORD=123456" >> android/gradle.properties
-          echo "MYAPP_UPLOAD_KEY_PASSWORD=123456" >> android/gradle.properties
+          keytool -genkey -v -keystore android/app/my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000 -storepass myStorePass123 -keypass myKeyPass123 -dname "CN=NewNET, OU=Dev, O=NewNET, L=Port Harcourt, S=Rivers, C=NG"
+          echo "MYAPP_UPLOAD_STORE_FILE=my-upload-key.keystore" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_KEY_ALIAS=my-key-alias" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_STORE_PASSWORD=myStorePass123" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_KEY_PASSWORD=myKeyPass123" >> android/gradle.properties
           cd android
           chmod +x gradlew
          ./gradlew bundleRelease
-
-      - name: Upload AAB file
+      - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          name: NewNET-Live-AAB
+          name: app-release
           path: android/app/build/outputs/bundle/release/app-release.aab
