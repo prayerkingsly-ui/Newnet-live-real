@@ -1,4 +1,4 @@
-name: Build AAB
+name: Build NewNeT APK + AAB
 on:
   push:
     branches: [main]
@@ -16,19 +16,23 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
-      - run: npm install
-      - run: |
-          npx expo prebuild --platform android --clean
+      - name: Install dependencies
+        run: npm install
+      - name: Create android folder (Expo prebuild)
+        run: npx expo prebuild --no-install --platform android
+      - name: Build APK and AAB
+        run: |
           cd android
-          mkdir -p app
-          keytool -genkey -v -keystore app/my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=NewNET, OU=Dev, O=NewNET, L=Port, S=Rivers, C=NG"
-          echo "MYAPP_UPLOAD_STORE_FILE=my-upload-key.keystore" >> gradle.properties
-          echo "MYAPP_UPLOAD_KEY_ALIAS=my-key-alias" >> gradle.properties
-          echo "MYAPP_UPLOAD_STORE_PASSWORD=123456" >> gradle.properties
-          echo "MYAPP_UPLOAD_KEY_PASSWORD=123456" >> gradle.properties
           chmod +x gradlew
+         ./gradlew assembleRelease
          ./gradlew bundleRelease
-      - uses: actions/upload-artifact@v4
+      - name: Upload APK (for your phone)
+        uses: actions/upload-artifact@v4
         with:
-          name: app-release
+          name: NewNeT-APK-Phone
+          path: android/app/build/outputs/apk/release/app-release.apk
+      - name: Upload AAB (for Play Store)
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewNeT-AAB-PlayStore
           path: android/app/build/outputs/bundle/release/app-release.aab
