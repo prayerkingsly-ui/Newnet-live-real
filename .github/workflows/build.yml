@@ -11,12 +11,23 @@ jobs:
         with: {node-version: 20}
       - run: npm install --legacy-peer-deps
       - run: rm -rf android && npx expo prebuild -p android --clean --no-install
-      - run: |
+      - name: FIX ALL COLORS - FINAL
+        run: |
           mkdir -p android/app/src/main/res/values
-          echo '<resources><color name="splashscreen_background">#FFF</color></resources>' > android/app/src/main/res/values/colors.xml
-          sed -i "s/@color\/splashscreen_background/#FFFFFF/g" android/app/src/main/res/values/strings.xml || true
-      - run: cd android && chmod +x gradlew && ./gradlew assembleRelease -x lint
+          cat > android/app/src/main/res/values/colors.xml <<'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+            <color name="splashscreen_background">#FFFFFF</color>
+            <color name="splashscreen_background_dark">#000000</color>
+            <color name="colorPrimary">#00C6FF</color>
+            <color name="colorPrimaryDark">#0096CC</color>
+            <color name="colorAccent">#FF2D78</color>
+            <color name="primary">#00C6FF</color>
+          </resources>
+          EOF
+          cat android/app/src/main/res/values/colors.xml
+      - run: cd android && chmod +x gradlew && ./gradlew assembleRelease --no-daemon -x lint
       - uses: actions/upload-artifact@v4
         with:
-          name: NewNET-APK
+          name: NewNET-APK-FINAL
           path: android/app/build/outputs/apk/release/app-release.apk
