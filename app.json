@@ -1,9 +1,21 @@
-
 {
   "expo": {
     "name": "NewNET Live",
     "slug": "newnet-live-real",
     "version": "1.0.0",
-    "android": { "package": "com.newnet.live" }
+    "orientation": "portrait",
+    "icon": "./icon.png",
+    "splash": {
+      "image": "./splash.png",
+      "backgroundColor": "#000000",
+      "resizeMode": "contain"
+    },
+    "android": {
+      "package": "com.newnet.live",
+      "adaptiveIcon": {
+        "foregroundImage": "./icon.png",
+        "backgroundColor": "#000000"
+      }
+    }
   }
 }
