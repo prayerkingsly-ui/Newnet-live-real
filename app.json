@@ -1,10 +1,9 @@
+
 {
   "expo": {
     "name": "NewNET Live",
     "slug": "newnet-live-real",
     "version": "1.0.0",
-    "android": {
-      "package": "com.newnet.live"
-    }
+    "android": { "package": "com.newnet.live" }
   }
 }
