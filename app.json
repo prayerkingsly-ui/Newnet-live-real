@@ -4,16 +4,16 @@
     "slug": "newnet-live-real",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./icon.png",
+    "icon": "./IMG-20260914-WA5823.jpg",
     "splash": {
-      "image":
+      "image": "./IMG-20260914-WA5823.jpg",
       "backgroundColor": "#000000",
       "resizeMode": "contain"
     },
     "android": {
       "package": "com.newnet.live",
       "adaptiveIcon": {
-        "foregroundImage": "./icon.png",
+        "foregroundImage": "./IMG-20260914-WA5823.jpg",
         "backgroundColor": "#000000"
       }
     }
