@@ -1,21 +1,11 @@
 {
   "expo": {
-    "name": "NewNET Live",
-    "slug": "newnet-live-real",
+    "name": "Newnet-live-real",
+    "slug": "Newnet-live-real",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./IMG-20260914-WA5823.jpg",
-    "splash": {
-      "image": "./IMG-20260914-WA5823.jpg",
-      "backgroundColor": "#000000",
-      "resizeMode": "contain"
-    },
     "android": {
-      "package": "com.newnet.live",
-      "adaptiveIcon": {
-        "foregroundImage": "./IMG-20260914-WA5823.jpg",
-        "backgroundColor": "#000000"
-      }
+      "permissions": ["android.permission.CAMERA", "android.permission.RECORD_AUDIO"],
+      "package": "com.newnet.live"
     }
   }
 }
