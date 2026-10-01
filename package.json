@@ -2,9 +2,15 @@
   "name": "newnet-live-real",
   "version": "1.0.0",
   "main": "App.tsx",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android"
+  },
   "dependencies": {
-    "expo": "~51.0.28",
+    "expo": "~50.0.17",
     "react": "18.2.0",
-    "react-native": "0.74.5"
+    "react-native": "0.73.6",
+    "agora-rn-uikit": "^2.0.1",
+    "react-native-agora": "^4.3.3"
   }
 }
