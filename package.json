@@ -10,8 +10,8 @@
     "expo": "~50.0.17",
     "react": "18.2.0",
     "react-native": "0.73.6",
-    "agora-rn-uikit": "^2.0.1",
-    "react-native-agora": "^4.3.3",
+    "agora-rn-uikit": "4.0.2",
+    "react-native-agora": "4.3.0",
     "@react-native-async-storage/async-storage": "^1.21.0"
   }
 }
