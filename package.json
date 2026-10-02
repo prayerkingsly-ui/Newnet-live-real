@@ -2,15 +2,12 @@
   "name": "newnet-live-real",
   "version": "1.0.0",
   "main": "App.tsx",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android"
-  },
+  "scripts": { "start": "expo start" },
   "dependencies": {
     "expo": "~50.0.17",
+    "expo-camera": "~14.1.3",
     "react": "18.2.0",
     "react-native": "0.73.6",
-    "expo-camera": "~14.0.5",
     "@react-native-async-storage/async-storage": "^1.21.0"
   }
 }
