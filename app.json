@@ -1,11 +1,21 @@
 {
   "expo": {
-    "name": "Newnet-live-real",
-    "slug": "Newnet-live-real",
+    "name": "NewNET LIVE Real",
+    "slug": "newnet-live-real",
     "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": ["android"],
     "android": {
-      "permissions": ["android.permission.CAMERA", "android.permission.RECORD_AUDIO"],
-      "package": "com.newnet.live"
-    }
+      "package": "com.newnet.live",
+      "permissions": ["android.permission.CAMERA", "android.permission.RECORD_AUDIO"]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera for LIVE"
+        }
+      ]
+    ]
   }
 }
